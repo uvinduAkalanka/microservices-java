@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: employee-service
+  datasource:
+#    url: jdbc:mysql://${MYSQL_HOST:mysql}:${MYSQL_PORT:3307}/${EMPLOYEE_DB_NAME:employee}
+    url: jdbc:mysql://localhost:3307/employee
+    username: ${MYSQL_DB_USERNAME:myRoot}
+    password: ${MYSQL_DB_PASSWORD:generic}
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
