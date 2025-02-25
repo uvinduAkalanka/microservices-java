@@ -21,18 +21,19 @@ public class EmployeeController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public EmployeeResponse createEmployee(@RequestBody @Valid EmployeeCreateRequest employeeRequest) {
-        System.out.println("Received Employee Request: " + employeeRequest);
-//        return null;
-        return employeeService.createEmployee(employeeRequest);
+        EmployeeResponse employee = employeeService.createEmployee(employeeRequest);
+        return employee;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EmployeeResponse> getAllEmployees() {
+        System.out.println("hello");
         return employeeService.listAllEmployees();
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public EmployeeResponse getEmployeeById(@PathVariable int id) {
+        employeeService.getEmployeeById(id);
         return employeeService.getEmployeeById(id);
     }
 

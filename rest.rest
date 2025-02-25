@@ -1,0 +1,29 @@
+@host=http://localhost:8080
+@basePath=/api
+@consumes=application/json
+
+
+
+###create a employee
+POST {{host}}{{basePath}}/employees HTTP/1.1
+Content-Type: {{consumes}}
+
+{
+  "birthDate": "1990-01-01",
+  "firstName": "John",
+  "lastName": "Doe",
+  "gender": "MALE",
+  "hireDate": "2018-01-01"
+}
+
+###get all employees
+GET {{host}}{{basePath}}/employees HTTP/1.1
+Content-Type: {{consumes}}
+
+###get employee by id
+GET {{host}}{{basePath}}/employees/2 HTTP/1.1
+Content-Type: {{consumes}}
+
+###employee by id
+DELETE http://localhost:8080/api/employees/99
+Accept: application/json
