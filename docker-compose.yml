@@ -1,0 +1,35 @@
+
+#version: "3.8"
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: generic
+      MYSQL_DATABASE: employee
+      MYSQL_USER: myRoot
+      MYSQL_PASSWORD: generic
+      MYSQL_ROOT_HOST: '%'  # Allows connections from any host
+    restart: always
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db-scripts:/usr/db-scripts
+volumes:
+  mysql_data:
+#  app:
+#    build: .
+#    container_name: spring-boot-app
+#    depends_on:
+#      - mysql
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/employee
+#      SPRING_DATASOURCE_USERNAME: root
+#      SPRING_DATASOURCE_PASSWORD: generic
+#    ports:
+#      - "8080:8080"
+
+#volumes:
+#  mysql_data:
