@@ -44,7 +44,9 @@ public class EmployeeController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeResponse> getEmployeeById(@PathVariable int id) {
         logger.info("REST request to get Employee : {}", id);
-        return ResponseEntity.ok().cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES)).body(employeeService.getEmployeeById(id));
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES))
+                .body(employeeService.getEmployeeById(id));
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

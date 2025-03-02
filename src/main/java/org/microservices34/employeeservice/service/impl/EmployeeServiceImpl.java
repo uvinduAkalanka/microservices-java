@@ -1,9 +1,7 @@
 package org.microservices34.employeeservice.service.impl;
 
-import jakarta.validation.Valid;
-
-
 import org.microservices34.employeeservice.entity.Employee;
+import org.microservices34.employeeservice.exception.ResourceNotFoundException;
 import org.microservices34.employeeservice.model.EmployeeCreateRequest;
 import org.microservices34.employeeservice.model.EmployeeResponse;
 import org.microservices34.employeeservice.repository.EmployeeRepository;
@@ -44,12 +42,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findById(id)
                 .map(employee -> modelMapper.map(employee, EmployeeResponse.class))
 //                .flatMap(employee -> modelMapper.map(employee, EmployeeResponse.class))
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee ", "id", id));
     }
 
     @Override
-    public String deleteEmployeeById(int id) {
+    public void deleteEmployeeById(int id) {
+        if (!employeeRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Employee", "id", id);
+        }
         employeeRepository.deleteById(id);
-        return "success";
     }
 }
