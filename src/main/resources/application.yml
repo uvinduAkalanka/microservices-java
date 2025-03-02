@@ -1,6 +1,9 @@
 spring:
   application:
     name: employee-service
+    include-stack-trace: false
+    support-email: support@example.com
+    docs-url: https://docs.example.com
   datasource:
 #    url: jdbc:mysql://${MYSQL_HOST:mysql}:${MYSQL_PORT:3307}/${EMPLOYEE_DB_NAME:employee}
     url: jdbc:mysql://localhost:3307/employee
@@ -20,3 +23,11 @@ management:
     web:
       exposure:
         include: "*"
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{correlationId}] %-5level %logger{36} - %msg%n"
+  level:
+    root: INFO
+    org.microservices34: DEBUG
+    org.springframework.web: INFO

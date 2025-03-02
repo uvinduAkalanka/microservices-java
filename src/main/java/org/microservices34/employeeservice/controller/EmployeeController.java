@@ -37,17 +37,14 @@ public class EmployeeController {
     public ResponseEntity<List<EmployeeResponse>> getAllEmployees(@RequestParam(required = false) String fields) {
         logger.info("REST request to get all Employees with fields filter: {}", fields);
         List<EmployeeResponse> employees = employeeService.listAllEmployees();
-        List<EmployeeResponse> filteredEmployees = resourceFilterService.filterFields(
-                employees, fields, EmployeeResponse.class);
+        List<EmployeeResponse> filteredEmployees = resourceFilterService.filterFields(employees, fields, EmployeeResponse.class);
         return ResponseEntity.ok(filteredEmployees);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeResponse> getEmployeeById(@PathVariable int id) {
         logger.info("REST request to get Employee : {}", id);
-        return ResponseEntity.ok()
-                .cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES))
-                .body(employeeService.getEmployeeById(id));
+        return ResponseEntity.ok().cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES)).body(employeeService.getEmployeeById(id));
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
