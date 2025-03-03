@@ -2,6 +2,9 @@ package org.microservices34.employeeservice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.microservices34.employeeservice.exception.BusinessException;
+import org.microservices34.employeeservice.exception.ErrorCodes;
+import org.microservices34.employeeservice.exception.ResourceNotFoundException;
 import org.microservices34.employeeservice.model.EmployeeCreateRequest;
 import org.microservices34.employeeservice.model.EmployeeResponse;
 import org.microservices34.employeeservice.service.EmployeeService;
@@ -36,17 +39,33 @@ public class EmployeeController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EmployeeResponse>> getAllEmployees(@RequestParam(required = false) String fields) {
         logger.info("REST request to get all Employees with fields filter: {}", fields);
-        List<EmployeeResponse> employees = employeeService.listAllEmployees();
-        List<EmployeeResponse> filteredEmployees = resourceFilterService.filterFields(employees, fields, EmployeeResponse.class);
-        return ResponseEntity.ok(filteredEmployees);
+
+        try {
+            List<EmployeeResponse> employees = employeeService.listAllEmployees();
+            List<EmployeeResponse> filteredEmployees = resourceFilterService.filterFields(employees, fields, EmployeeResponse.class);
+            return ResponseEntity.ok(filteredEmployees);
+        } catch (IllegalArgumentException e) {
+            throw new BusinessException(
+                    "Invalid field filter: " + e.getMessage(),
+                    ErrorCodes.INVALID_FORMAT,
+                    HttpStatus.BAD_REQUEST
+            );
+        }
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeResponse> getEmployeeById(@PathVariable int id) {
         logger.info("REST request to get Employee : {}", id);
-        return ResponseEntity.ok()
-                .cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES))
-                .body(employeeService.getEmployeeById(id));
+        try {
+            EmployeeResponse employee = employeeService.getEmployeeById(id);
+            return ResponseEntity.ok()
+                    .cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES))
+                    .body(employee);
+        }catch (ResourceNotFoundException ex) {
+            // This will be caught by the GlobalExceptionHandler, but logging here helps
+            logger.warn("Employee not found with ID: {}", id);
+            throw ex;
+        }
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

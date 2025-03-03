@@ -1,12 +1,15 @@
 package org.microservices34.employeeservice.service.impl;
 
 import org.microservices34.employeeservice.entity.Employee;
+import org.microservices34.employeeservice.exception.BusinessException;
+import org.microservices34.employeeservice.exception.ErrorCodes;
 import org.microservices34.employeeservice.exception.ResourceNotFoundException;
 import org.microservices34.employeeservice.model.EmployeeCreateRequest;
 import org.microservices34.employeeservice.model.EmployeeResponse;
 import org.microservices34.employeeservice.repository.EmployeeRepository;
 import org.microservices34.employeeservice.service.EmployeeService;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +27,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse createEmployee(EmployeeCreateRequest employeeRequest) {
+        if (employeeRepository.existsByEmail(employeeRequest.getEmail())) {
+            throw new BusinessException(
+                    "Employee with email already exists",
+                    ErrorCodes.RESOURCE_ALREADY_EXISTS,
+                    HttpStatus.CONFLICT
+            );
+        }
         Employee employee = modelMapper.map(employeeRequest, Employee.class);
         var savedEmployee = employeeRepository.save(employee);
         return modelMapper.map(savedEmployee, EmployeeResponse.class);
