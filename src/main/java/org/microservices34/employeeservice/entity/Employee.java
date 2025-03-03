@@ -1,10 +1,7 @@
 package org.microservices34.employeeservice.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -43,4 +40,7 @@ public class Employee {
     @NotNull
     private Gender gender;
 
+    @Column(name = "email")
+    @Email(message = "Please provide a valid email address")
+    private String email;
 }

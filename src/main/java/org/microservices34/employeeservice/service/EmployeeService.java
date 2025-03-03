@@ -13,5 +13,5 @@ public interface EmployeeService  {
 
     EmployeeResponse getEmployeeById(int id);
 
-    String deleteEmployeeById(int id);
+    void deleteEmployeeById(int id);
 }

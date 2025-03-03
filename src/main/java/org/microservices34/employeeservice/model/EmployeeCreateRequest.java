@@ -2,9 +2,7 @@ package org.microservices34.employeeservice.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,10 +29,12 @@ public class EmployeeCreateRequest {
     private LocalDate hireDate;
 
     @NotNull(message = "First name cannot be null")
+    @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")
     @JsonProperty("firstName")
     private String firstName;
 
     @NotNull(message = "last name cannot be null")
+    @Size(min = 2, max = 50, message = "Last name must be between 2 and 50 characters")
     @JsonProperty("lastName")
     private String lastName;
 
@@ -42,4 +42,9 @@ public class EmployeeCreateRequest {
     @NotNull(message = "gender cannot be null")
     @JsonProperty("gender")
     private Gender gender;
+
+    @Email(message = "Please provide a valid email address",
+            regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+    @JsonProperty("email")
+    private String email;
 }
