@@ -13,8 +13,9 @@ Content-Type: {{consumes}}
   "firstName": "John-sina",
   "lastName": "Doe-sina",
   "gender": "MALE",
-  "hireDate": "2018-01-21"
-}
+  "hireDate": "2018-01-21",
+  "email": "uvi@Gmail.com"
+ }
 
 ###get all employees
 GET {{host}}{{basePath}}/employees HTTP/1.1
@@ -25,7 +26,7 @@ GET {{host}}{{basePath}}/employees?fields=employeeNumber,firstName HTTP/1.1
 Content-Type: {{consumes}}
 
 ###get employee by id
-GET {{host}}{{basePath}}/employees/5 HTTP/1.1
+GET {{host}}{{basePath}}/employees/4 HTTP/1.1
 Content-Type: {{consumes}}
 
 ###employee by id
